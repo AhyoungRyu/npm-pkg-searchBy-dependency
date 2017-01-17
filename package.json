@@ -1,0 +1,29 @@
+{
+  "name": "npm-pkg-searchby-dependency",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/fancy.js"
+  },
+  "author": "AhyoungRyu",
+  "license": "AGPL-1.0",
+  "main": "npmPkgSearchByDependency.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency/issues"
+  },
+  "homepage": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency#readme",
+  "dependencies": {
+    "npm-registry-client": "^7.0.9",
+    "prttty": "^0.9.1",
+    "silent-npm-registry-client": "^2.0.0"
+  },
+  "devDependencies": {
+    "chalk": "^1.1.1",
+    "minimist": "^1.2.0"
+  }
+}
