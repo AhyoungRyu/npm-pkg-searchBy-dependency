@@ -18,9 +18,8 @@ function searchUri (registryURL, dependency) {
   })
 }
 
-// pass dependency: 'zeppelin-vis'
 module.exports = function npmPkgSearchByDependency (dependency, callback) {
-  var params = { timeout: 2000 }
+  var params = { timeout: 1000 }
   var options = (typeof dependency === 'object') ? dependency : {
     dependency: dependency,
     registryURL: 'https://registry.npmjs.org/',
@@ -29,29 +28,18 @@ module.exports = function npmPkgSearchByDependency (dependency, callback) {
 
   var log = options.debug ? console.log.bind(console) : function () {}
   var client = new RegClient({logstream: new stream.Writable()})
-  // construct registry url
   var uri = searchUri(options.registryURL, options.dependency)
 
   log('Querying', uri)
 
   client.get(uri, params, function (error, data, raw) {
-    // pass errors to callback
     if (error) {
       return callback(error)
     }
-    // data is the parsed data object
-    // raw is the json string
+    // data: parsed data object & raw: json string
     log('Response', prttty(data || raw))
 
     callback(null, data.rows.map(function (r) {
-      // This is what a row looks like:
-      //
-      // { value: 1
-      // , key: [ 'zeppelin-vis'
-      //        , 'zeppelin-highcharts-spline'
-      //        , 'Draw spline graph using Highcharts library'
-      //        ]
-      // }
       return {
         name: r.key[1],
         description: r.key[2]
