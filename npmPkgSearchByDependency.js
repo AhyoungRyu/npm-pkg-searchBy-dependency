@@ -4,9 +4,6 @@ var url = require('url')
 var strfmt = require('util').format
 var prttty = require('prttty').render
 
-// based off
-// https://stackoverflow.com/questions/13657140/how-to-get-all-npm-packages-that-match-a-particular-dependency-in-json-format
-
 function searchUri (registryURL, dependency) {
   var u = url.parse(registryURL)
   return url.format({
@@ -21,44 +18,38 @@ function searchUri (registryURL, dependency) {
   })
 }
 
-var params = { timeout: 1000 }
-
-// pass dependency
+// pass dependency: 'zeppelin-vis'
 module.exports = function npmPkgSearchByDependency (dependency, callback) {
+  var params = { timeout: 2000 }
   var options = (typeof dependency === 'object') ? dependency : {
     dependency: dependency,
     registryURL: 'https://registry.npmjs.org/',
     debug: true
   }
 
-  // to log or not to log
   var log = options.debug ? console.log.bind(console) : function () {}
-
-  // construct registry client
   var client = new RegClient({logstream: new stream.Writable()})
-
   // construct registry url
   var uri = searchUri(options.registryURL, options.dependency)
 
   log('Querying', uri)
 
-  client.get(uri, params, function (error, data, raw, res) {
+  client.get(uri, params, function (error, data, raw) {
     // pass errors to callback
     if (error) {
       return callback(error)
     }
     // data is the parsed data object
     // raw is the json string
-    // res is the response from couch
     log('Response', prttty(data || raw))
 
     callback(null, data.rows.map(function (r) {
       // This is what a row looks like:
       //
       // { value: 1
-      // , key: [ 'gulp-plugin'
-      //        , 'vinyl-fs-mock'
-      //        , 'A fake file system implementation...etc'
+      // , key: [ 'zeppelin-vis'
+      //        , 'zeppelin-highcharts-spline'
+      //        , 'Draw spline graph using Highcharts library'
       //        ]
       // }
       return {
