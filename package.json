@@ -2,13 +2,12 @@
   "name": "npm-pkg-searchby-dependency",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "npmPkgSearchByDependency.js",
   "scripts": {
     "test": "node test.js"
   },
   "author": "AhyoungRyu",
   "license": "AGPL-1.0",
-  "main": "npmPkgSearchByDependency.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency.git"
@@ -18,6 +17,7 @@
   },
   "homepage": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency#readme",
   "dependencies": {
+    "aws-sdk": "^2.7.25",
     "npm-registry-client": "^7.0.9",
     "prttty": "^0.9.1",
     "silent-npm-registry-client": "^2.0.0"
