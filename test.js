@@ -1,8 +1,12 @@
+var RegClient = require('silent-npm-registry-client')
+var stream = require('stream')
 var npmPkgSearchByDependency = require('./npmPkgSearchByDependency')
-var getFullPkgInfo = require('./getFullPkgInfo')
-
 var dependency = 'zeppelin-vis'
 
+/*
+ run this file if you need to check in local
+ npm run test
+*/
 npmPkgSearchByDependency(dependency, function (error, packages) {
     if (error) {
       console.error(error)
@@ -11,14 +15,31 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
 
     var N = packages.length
     var callbackMsg = []
+    var params = { timeout: 1000 }
+    var client = new RegClient({logstream: new stream.Writable()})
 
     console.log('\nPackages matching \"' + dependency + '\": (' + N + ')\n')
 
     packages.forEach(function (pkg) {
+      // get each package's url
       var registryURL = 'https://registry.npmjs.org/' + pkg.name + '/latest'
-
-      console.log(registryURL)
       callbackMsg.push(registryURL)
+
+      // get each package's name, desc, artifact and license info
+      client.get(registryURL, params, function (error, data) {
+        if (error) {
+          return callback(error)
+        }
+        var result = {
+          name: data.name,
+          description: data.description,
+          artifact: data._id,
+          license: data.license
+        }
+
+        console.log(result);
+      })
     })
+    console.log(callbackMsg)
     console.log('')
 })
