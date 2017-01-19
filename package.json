@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test/fancy.js"
+    "test": "node test.js"
   },
   "author": "AhyoungRyu",
   "license": "AGPL-1.0",
