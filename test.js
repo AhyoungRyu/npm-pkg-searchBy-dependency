@@ -1,6 +1,7 @@
 var RegClient = require('silent-npm-registry-client')
 var stream = require('stream')
 var stringify = require('json-stringify-pretty-compact')
+
 var npmPkgSearchByDependency = require('./npmPkgSearchByDependency')
 var dependency = 'zeppelin-vis'
 
@@ -15,23 +16,28 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
     }
 
     var N = packages.length
-    var callbackMsg = []
+    var uriList = []
     var params = { timeout: 1000 }
     var client = new RegClient({logstream: new stream.Writable()})
-    var type = "VISUALIZATION"
+    const type = "VISUALIZATION"
 
     console.log('\nPackages matching \"' + dependency + '\": (' + N + ')\n')
-
     packages.forEach(function (pkg) {
       // get each package's url
       var registryURL = 'https://registry.npmjs.org/' + pkg.name + '/latest'
-      callbackMsg.push(registryURL)
+      uriList.push(registryURL)
+    })
+    console.log('')
 
-      // get each package's name, desc, artifact and license info
-      client.get(registryURL, params, function (error, data) {
+    // get each package's name, desc, artifact and license info
+    var finalResult = []
+    var iter = N
+    uriList.forEach(function (uri) {
+      client.get(uri, params, function (error, data) {
         if (error) {
           return callback(error)
         }
+
         var result = {
           type: type,
           name: data.name,
@@ -41,10 +47,13 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
           icon: (data.icon == undefined) ? '<i class="fa fa-plug"></i>' : data.icon
         }
 
-        var parsedBody = stringify(result)
-        console.log(parsedBody);
+        console.log(stringify(result))
+        finalResult.push(result)
+
+        if (N < iter) {
+          console.log(stringify(finalResult))
+        }
+        iter++
       })
     })
-    console.log(callbackMsg)
-    console.log('')
 })
