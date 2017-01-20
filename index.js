@@ -30,6 +30,7 @@ exports.handler = (event, context, callback) => {
     var callbackMsg = []
     var params = { timeout: 1000 }
     var client = new RegClient({logstream: new stream.Writable()})
+    var type = 'VISUALIZATION'
 
     console.log('\nPackages matching \"' + dependency + '\": (' + N + ')\n')
 
@@ -44,13 +45,16 @@ exports.handler = (event, context, callback) => {
           return callback(error)
         }
         var result = {
+          type: type,
           name: data.name,
           description: data.description,
           artifact: data._id,
-          license: data.license
+          license: data.license,
+          icon: (data.icon == undefined) ? '<i class="fa fa-plug"></i>' : data.icon
         }
 
         var parsedBody = JSON.stringify(result)
+        console.log(parsedBody);
 
         // upload each file to S3 bucket
         var param = {
