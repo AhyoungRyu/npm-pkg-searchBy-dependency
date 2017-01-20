@@ -22,9 +22,5 @@
     "npm-registry-client": "^7.0.9",
     "prttty": "^0.9.1",
     "silent-npm-registry-client": "^2.0.0"
-  },
-  "devDependencies": {
-    "chalk": "^1.1.1",
-    "minimist": "^1.2.0"
   }
 }
