@@ -1,5 +1,6 @@
 var RegClient = require('silent-npm-registry-client')
 var stream = require('stream')
+var stringify = require('json-stringify-pretty-compact')
 var npmPkgSearchByDependency = require('./npmPkgSearchByDependency')
 
 var dependency = 'zeppelin-vis'
@@ -53,7 +54,7 @@ exports.handler = (event, context, callback) => {
           icon: (data.icon == undefined) ? '<i class="fa fa-plug"></i>' : data.icon
         }
 
-        var parsedBody = JSON.stringify(result)
+        var parsedBody = stringify(result)
         console.log(parsedBody);
 
         // upload each file to S3 bucket

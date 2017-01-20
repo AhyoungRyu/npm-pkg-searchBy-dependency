@@ -18,6 +18,7 @@
   "homepage": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency#readme",
   "dependencies": {
     "aws-sdk": "^2.7.25",
+    "json-stringify-pretty-compact": "^1.0.2",
     "npm-registry-client": "^7.0.9",
     "prttty": "^0.9.1",
     "silent-npm-registry-client": "^2.0.0"

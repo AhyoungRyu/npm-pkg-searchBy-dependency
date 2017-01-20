@@ -1,5 +1,6 @@
 var RegClient = require('silent-npm-registry-client')
 var stream = require('stream')
+var stringify = require('json-stringify-pretty-compact')
 var npmPkgSearchByDependency = require('./npmPkgSearchByDependency')
 var dependency = 'zeppelin-vis'
 
@@ -40,7 +41,8 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
           icon: (data.icon == undefined) ? '<i class="fa fa-plug"></i>' : data.icon
         }
 
-        console.log(result);
+        var parsedBody = stringify(result)
+        console.log(parsedBody);
       })
     })
     console.log(callbackMsg)
