@@ -15,10 +15,10 @@ var s3 = new AWS.S3(
 /*
   This file is main for the AWS Lambda
   Input: package's name, description, artifact(_id), license
-  Where: helium-packages S3 bucket
+  Where: helium-package S3 bucket
  */
 exports.handler = (event, context, callback) => {
-  var bucketName = 'helium-packages'
+  var bucketName = 'helium-package'
 
   npmPkgSearchByDependency(dependency, function (error, packages) {
     if (error) {
