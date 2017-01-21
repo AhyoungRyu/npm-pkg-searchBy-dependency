@@ -1,14 +1,14 @@
-var RegClient = require('silent-npm-registry-client')
-var stream = require('stream')
+var argv = require('minimist')(process.argv.slice(2))
 var stringify = require('json-stringify-pretty-compact')
-
 var npmPkgSearchByDependency = require('./npmPkgSearchByDependency')
-var dependency = 'zeppelin-vis'
+
 
 /*
- run this file if you need to check in local
- npm run test
+ If it didn't get any args, will search packages which have 'zeppelin-vis' by default
+ command: npm test 'any_dependencies' (e.g. 'babel-core')
 */
+var dependency = (argv._.length === 0) ? 'zeppelin-vis' : argv._[0]
+
 npmPkgSearchByDependency(dependency, function (error, packages) {
     if (error) {
       console.error(error)
@@ -16,44 +16,13 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
     }
 
     var N = packages.length
-    var uriList = []
-    var params = { timeout: 1000 }
-    var client = new RegClient({logstream: new stream.Writable()})
-    const type = "VISUALIZATION"
-
     console.log('\nPackages matching \"' + dependency + '\": (' + N + ')\n')
+
     packages.forEach(function (pkg) {
-      // get each package's url
-      var registryURL = 'https://registry.npmjs.org/' + pkg.name + '/latest'
-      uriList.push(registryURL)
+      console.log('Package name: ' +  pkg.name + ' \u21E2  ' + pkg.description)
+
+      var registryURL = 'https://registry.npmjs.org/' + pkg.name + '/latest\n'
+      console.log('Registry URL: ', registryURL)
     })
     console.log('')
-
-    // get each package's name, desc, artifact and license info
-    var finalResult = []
-    var iter = N
-    uriList.forEach(function (uri) {
-      client.get(uri, params, function (error, data) {
-        if (error) {
-          return callback(error)
-        }
-
-        var result = {
-          type: type,
-          name: data.name,
-          description: data.description,
-          artifact: data._id,
-          license: data.license,
-          icon: (data.icon == undefined) ? '<i class="fa fa-plug"></i>' : data.icon
-        }
-
-        console.log(stringify(result))
-        finalResult.push(result)
-
-        if (N < iter) {
-          console.log(stringify(finalResult))
-        }
-        iter++
-      })
-    })
 })

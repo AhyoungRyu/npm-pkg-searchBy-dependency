@@ -1,7 +1,7 @@
 {
   "name": "npm-pkg-searchby-dependency",
   "version": "0.0.1",
-  "description": "",
+  "description": "Searching node packages by dependencies from NPM registry",
   "main": "npmPkgSearchByDependency.js",
   "scripts": {
     "test": "node test.js"
@@ -16,8 +16,10 @@
     "url": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency/issues"
   },
   "homepage": "https://github.com/AhyoungRyu/npm-pkg-searchBy-dependency#readme",
+  "devDependencies": {
+    "minimist": "^1.2.0"
+  },
   "dependencies": {
-    "aws-sdk": "^2.7.25",
     "json-stringify-pretty-compact": "^1.0.2",
     "npm-registry-client": "^7.0.9",
     "prttty": "^0.9.1",
