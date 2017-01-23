@@ -21,7 +21,7 @@ npmPkgSearchByDependency(dependency, function (error, packages) {
     packages.forEach(function (pkg) {
       console.log('Package name: ' +  pkg.name + ' \u21E2  ' + pkg.description)
 
-      var registryURL = 'https://registry.npmjs.org/' + pkg.name + '/latest\n'
+      var registryURL = 'https://registry.npmjs.org/' + pkg.name + '\n'
       console.log('Registry URL: ', registryURL)
     })
     console.log('')
