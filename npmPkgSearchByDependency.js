@@ -42,7 +42,8 @@ module.exports = function npmPkgSearchByDependency (dependency, callback) {
     callback(null, data.rows.map(function (r) {
       return {
         name: r.key[1],
-        description: r.key[2]
+        description: r.key[2],
+        uri: options.registryURL + r.key[1]
       }
     }))
   })
