@@ -1,6 +1,6 @@
 {
   "name": "npm-pkg-searchby-dependency",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Searching node packages by dependencies from NPM registry",
   "main": "npmPkgSearchByDependency.js",
   "scripts": {

@@ -5,6 +5,8 @@ var strfmt = require('util').format
 var prttty = require('prttty').render
 var Promise = require('bluebird')
 
+module.exports = npmPkgSearchByDependency
+
 function searchUri (registryURL, dependency) {
   var u = url.parse(registryURL)
   return url.format({
@@ -19,7 +21,7 @@ function searchUri (registryURL, dependency) {
   })
 }
 
-module.exports = function npmPkgSearchByDependency (dependency, callback) {
+function npmPkgSearchByDependency (dependency, callback) {
   var params = {timeout: 1000}
   var options = (typeof dependency === 'object') ? dependency : {
     dependency: dependency,
