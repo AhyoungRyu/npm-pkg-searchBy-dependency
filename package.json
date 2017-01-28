@@ -1,6 +1,6 @@
 {
   "name": "npm-pkg-searchby-dependency",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Searching node packages by dependencies from NPM registry",
   "main": "npmPkgSearchByDependency.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "minimist": "^1.2.0"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "json-stringify-pretty-compact": "^1.0.2",
     "npm-registry-client": "^7.0.9",
     "prttty": "^0.9.1",

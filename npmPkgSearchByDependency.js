@@ -3,6 +3,7 @@ var stream = require('stream')
 var url = require('url')
 var strfmt = require('util').format
 var prttty = require('prttty').render
+var Promise = require('bluebird')
 
 function searchUri (registryURL, dependency) {
   var u = url.parse(registryURL)
@@ -19,32 +20,35 @@ function searchUri (registryURL, dependency) {
 }
 
 module.exports = function npmPkgSearchByDependency (dependency, callback) {
-  var params = { timeout: 1000 }
+  var params = {timeout: 1000}
   var options = (typeof dependency === 'object') ? dependency : {
     dependency: dependency,
     registryURL: 'https://registry.npmjs.org/',
     debug: true
   }
 
-  var log = options.debug ? console.log.bind(console) : function () {}
+  var log = options.debug ? console.log.bind(console) : function () {
+  }
   var client = new RegClient({logstream: new stream.Writable()})
+  client = Promise.promisifyAll(client)
+
   var uri = searchUri(options.registryURL, options.dependency)
 
   log('Querying', uri)
 
-  client.get(uri, params, function (error, data, raw) {
-    if (error) {
-      return callback(error)
-    }
-    // data: parsed data object & raw: json string
-    log('Response', prttty(data || raw))
+  client.getAsync(uri, params)
+    .then(function (data, raw) {
+      log('Response', prttty(data || raw))
 
-    callback(null, data.rows.map(function (r) {
-      return {
-        name: r.key[1],
-        description: r.key[2],
-        uri: options.registryURL + r.key[1]
-      }
-    }))
-  })
+      callback(null, data.rows.map(function (r) {
+        return {
+          name: r.key[1],
+          description: r.key[2],
+          uri: options.registryURL + r.key[1]
+        }
+      }))
+    })
+    .catch(function (error) {
+      return callback(error)
+    })
 }
